@@ -1,5 +1,7 @@
 class MoviesController < ApplicationController
 
+  logger.debug(@movie.inspect)
+  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -7,7 +9,9 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @movies = Movie.with_ratings(ratings)
+    @all_ratings = Movie.all_ratings
+    @ratings_to_show = params[:ratings] || Movie.all_ratings
   end
 
   def new
@@ -38,7 +42,6 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
-  private
   # Making "internal" methods private is not required, but is a common practice.
   # This helps make clear which methods respond to requests, and which ones do not.
   def movie_params
