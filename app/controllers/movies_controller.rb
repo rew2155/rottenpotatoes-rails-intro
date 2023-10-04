@@ -1,6 +1,5 @@
 class MoviesController < ApplicationController
 
-  logger.debug(@movie.inspect)
   
   def show
     id = params[:id] # retrieve movie ID from URI route
@@ -9,20 +8,23 @@ class MoviesController < ApplicationController
   end
 
   def index
-    if params[:ratings] == nil
-      @ratings_to_show = Movie.all_ratings
-    else
-      @ratings_to_show = params[:ratings].keys
-    end
-    @all_ratings = Movie.all_ratings
+      if params[:ratings] == nil
+        @ratings_to_show = Movie.all_ratings
+      else
+        @ratings_to_show = params[:ratings].keys
+        session[:ratings] = params[:ratings] 
+      end
 
-    sort_by = params[:sort] || 'title'
-    @movies = Movie.with_ratings(@ratings_to_show).order(sort_by)
-    @selected_column = sort_by
-    @column_css_class = {
-      "title" => "hilite bg-warning",
-      "release_date" => "hilite bg-warning"
-    }
+      @all_ratings = Movie.all_ratings
+
+      sort_by = params[:sort] || 'title'
+      @movies = Movie.with_ratings(@ratings_to_show).order(sort_by)
+      @selected_column = sort_by
+      @column_css_class = {
+        "title" => "hilite bg-warning",
+        "release_date" => "hilite bg-warning"
+      }
+      session[:sort] = @selected_column
   end
 
   def new
