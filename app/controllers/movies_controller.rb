@@ -14,8 +14,15 @@ class MoviesController < ApplicationController
     else
       @ratings_to_show = params[:ratings].keys
     end
-    @movies = Movie.with_ratings(@ratings_to_show)
     @all_ratings = Movie.all_ratings
+
+    sort_by = params[:sort] || 'title'
+    @movies = Movie.with_ratings(@ratings_to_show).order(sort_by)
+    @selected_column = sort_by
+    @column_css_class = {
+      "title" => "hilite bg-warning",
+      "release_date" => "hilite bg-warning"
+    }
   end
 
   def new
