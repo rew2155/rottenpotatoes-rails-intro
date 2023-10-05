@@ -9,32 +9,32 @@ class MoviesController < ApplicationController
 
   def index
 
+    if params[:sort] != nil
+      sort_by = params[:sort]
+      session[:sort] = params[:sort]
+    elsif session[:sort] != nil
+      params[:sort] = session[:sort]
+      sort_by = session[:sort]
+      session[:sort] = sort_by
+    else
+      sort_by = params[:sort]
+      params[:sort] = []
+    end
+    
     if params[:ratings] != nil
       @ratings_to_show = params[:ratings].keys
       session[:ratings] = params[:ratings]
     elsif session[:ratings] != nil
       params[:ratings] = session[:ratings]
       @ratings_to_show = params[:ratings].keys
+      #return redirect_to movie_path(sort: params[:sort], ratings: params[:ratings])
     else
       @ratings_to_show = Movie.all_ratings
       params[:ratings] = Hash[@ratings_to_show.map { |rating| [rating, 1] }]
     end
-
-    if params[:sort] != nil
-      sort_by = params[:sort]
-      @movies = Movie.with_ratings(@ratings_to_show).order(sort_by)
-      session[:sort] = params[:sort]
-    elsif session[:sort] != nil
-      params[:sort] = session[:sort]
-      sort_by = params[:sort]
-      @movies = Movie.with_ratings(@ratings_to_show).order(sort_by)
-      session[:sort] = sort_by
-    else
-      sort_by = params[:sort]
-      @movies = Movie.with_ratings(@ratings_to_show)
-      params[:sort] = []
-    end
-  
+ 
+    @movies = Movie.with_ratings(@ratings_to_show).order(sort_by)
+    #redirect_to movie_path(sort: params[:sort], ratings: params[:ratings])
     @all_ratings = Movie.all_ratings
   end
 
