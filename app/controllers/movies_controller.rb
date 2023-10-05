@@ -24,10 +24,11 @@ class MoviesController < ApplicationController
     if params[:ratings] != nil
       @ratings_to_show = params[:ratings].keys
       session[:ratings] = params[:ratings]
+      #return redirect_to movies_path(sort: params[:sort], ratings: session[:ratings])
     elsif session[:ratings] != nil
       params[:ratings] = session[:ratings]
       @ratings_to_show = params[:ratings].keys
-      #return redirect_to movie_path(sort: params[:sort], ratings: params[:ratings])
+      return redirect_to movies_path(sort: params[:sort], ratings: params[:ratings])
     else
       @ratings_to_show = Movie.all_ratings
       params[:ratings] = Hash[@ratings_to_show.map { |rating| [rating, 1] }]
