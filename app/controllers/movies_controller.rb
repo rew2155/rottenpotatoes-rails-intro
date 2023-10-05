@@ -25,8 +25,8 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
     @selected_column = sort_by
     @column_css_class = {
-      "title" => "hilite bg-warning",
-      "release_date" => "hilite bg-warning"
+      "title" => "hilite",
+      "release_date" => "hilite"
     }
   end
 
