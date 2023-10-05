@@ -17,7 +17,7 @@
   <thead>
     <tr>
       <th id= "title_header" class = "<%= @selected_column == "title" ? @column_css_class["title"] : nil %>" >
-        <%= link_to "Movie Title", movies_path(sort: "title", :ratings => @ratings_to_show.map { |item| [item, 1] }.to_h) %>
+        <%= link_to "Movie Title", movies_path(sort: "title", ratings: @ratings_to_show.map { |item| [item, 1] }.to_h) %>
       </th>
       <th>Rating</th>
       <th id= "release_date_header" class = "<%= @selected_column == "release_date" ? @column_css_class["release_date"] : nil %>" >
